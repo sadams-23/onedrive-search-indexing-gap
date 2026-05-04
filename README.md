@@ -21,6 +21,9 @@ The repository contains:
 - This failure mode produces silent false negatives, which degrade user trust more severely than explicit errors and disrupt common workflows such as resume retrieval and document formatting.
 
 
+**Reproducibility:** Confirmed on multiple attempts in a clean OneDrive environment.
+
+
 ## Why This Matters
 
 This issue is not just a Copilot failure; it is a search‑indexing defect in OneDrive. Copilot relies entirely on the OneDrive search index, and when the index fails to ingest a file, Copilot has no fallback mechanism. This creates a single‑point‑of‑failure scenario where any indexing miss results in permanent invisibility.
@@ -30,6 +33,14 @@ Testing also suggests a second defect involving folder indexing, as no folder st
 From a business perspective, resume files are among the most commonly searched documents. When Copilot cannot find them, all downstream workflows are blocked. This undermines Copilot’s value as a productivity assistant.
 
 From a Human–AI interaction standpoint, silent false negatives erode user trust more quickly than visible errors. Users interpret the failure as AI incompetence, not an indexing gap. Copilot needs transparency when search results may be incomplete, and a fallback mechanism is essential for maintaining user trust.
+
+## Potential Engineering Fixes
+
+- Provide clearer user feedback when indexing is incomplete: Instead of returning “no results,” Copilot could surface a message explaining that OneDrive indexing may still be in progress. This would prevent users from assuming their files are missing and help maintain trust.
+- Add a fallback discovery method when search fails: If the search index doesn’t return a file, Copilot could try a secondary method such as checking the folder directly. Even a simple fallback would reduce silent false negatives.
+- Offer a user‑initiated “refresh indexing” option: Giving users a way to prompt OneDrive to re‑index a folder would create a recovery path when search results seem incorrect.
+- Improve visibility into indexing status: A small indicator showing whether OneDrive indexing is complete would help users understand why search results might be incomplete.
+- Add telemetry to detect silent failures: If a file is retrievable by ID but missing from search, the system could log that discrepancy. This would help engineering teams identify and fix indexing gaps earlier.
 
 ## Full Report
 
