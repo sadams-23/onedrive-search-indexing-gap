@@ -1,4 +1,5 @@
 # Improving Copilot File Search Reliability
+*A beginner‑friendly case study exploring how OneDrive indexing gaps can cause Copilot to miss files that actually exist.*
 
 ## Purpose
 
