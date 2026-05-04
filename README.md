@@ -12,6 +12,15 @@ The repository contains:
 - Suggested engineering improvements
 - A reproducible case study that can be used for debugging, regression testing, or internal escalation
 
+## Summary of Findings
+
+- OneDrive’s search index failed to ingest a cloud‑resident file that was fully synced, visible in the web interface, and retrievable via direct resource ID.  
+- Copilot’s file‑search pipeline relies exclusively on this index and lacks a fallback path, causing the file to appear nonexistent despite being present.  
+- Multiple search strategies—keyword queries, exact filename, name variations, and browse methods—all returned no results, confirming a consistent indexing failure rather than a query‑specific issue.  
+- Folder structures were also not returned, indicating a second defect in folder‑level indexing that compounds the impact of file‑level misses.  
+- This failure mode produces silent false negatives, which degrade user trust more severely than explicit errors and disrupt common workflows such as resume retrieval and document formatting.
+
+
 ## Why This Matters
 
 This issue is not just a Copilot failure; it is a search‑indexing defect in OneDrive. Copilot relies entirely on the OneDrive search index, and when the index fails to ingest a file, Copilot has no fallback mechanism. This creates a single‑point‑of‑failure scenario where any indexing miss results in permanent invisibility.
